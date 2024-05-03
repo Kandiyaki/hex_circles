@@ -25,10 +25,9 @@ public class Hex_circlesItemRegistry {
     }
 
     // A new creative tab. Notice how it is one of the few things that are not deferred
-    public static final ItemGroup CIRCLES_GROUP = CreativeTabRegistry.create(id("circles_group"), () -> new ItemStack(Hex_circlesItemRegistry.DUMMY_ITEM.get()));
+    public static final ItemGroup CIRCLES_GROUP = CreativeTabRegistry.create(id("circles_group"), () -> new ItemStack(Hex_circlesItemRegistry.CHALKSTICK_ITEM.get()));
 
     // During the loading phase, refrain from accessing suppliers' items (e.g. EXAMPLE_ITEM.get()), they will not be available
-    public static final RegistrySupplier<Item> DUMMY_ITEM = ITEMS.register("dummy_item", () -> new Item(new Item.Settings().group(CIRCLES_GROUP)));
     public static final RegistrySupplier<Item> CHALKSTICK_ITEM = ITEMS.register("amethyst_chalk", () -> new ItemChalkStick(CHALKCIRCLES_16STACK.group(CIRCLES_GROUP)));
     public static final RegistrySupplier<BlockItem> CHALKSQUARE_BLOCK_ITEM = ITEMS.register("chalk_square_block", () -> new BlockItem(Hex_circlesBlockRegistry.CHALK_RUNE.get(), CHALKCIRCLES_64STACK.group(CIRCLES_GROUP)));
 

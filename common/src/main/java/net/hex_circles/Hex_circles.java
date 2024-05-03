@@ -3,6 +3,7 @@ package net.hex_circles;
 import net.hex_circles.registry.Hex_circlesIotaTypeRegistry;
 import net.hex_circles.registry.Hex_circlesItemRegistry;
 import net.hex_circles.registry.Hex_circlesPatternRegistry;
+import net.hex_circles.registry.Hex_circlesBlockRegistry;
 import net.hex_circles.networking.Hex_circlesNetworking;
 import net.minecraft.util.Identifier;
 import org.apache.logging.log4j.LogManager;
@@ -20,7 +21,9 @@ public class Hex_circles {
     public static void init() {
         LOGGER.info("Hex Circles says hello!");
 
+
         Hex_circlesAbstractions.initPlatformSpecific();
+        Hex_circlesBlockRegistry.init();
         Hex_circlesItemRegistry.init();
         Hex_circlesIotaTypeRegistry.init();
         Hex_circlesPatternRegistry.init();

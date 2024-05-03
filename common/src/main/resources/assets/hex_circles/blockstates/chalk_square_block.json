@@ -1,34 +1,42 @@
 {
   "variants": {
     "face=ceiling": {
-      "model": "hex_circles:block/chalk_square_block",
-      "uvlock": true,
+      "model": "hex_circles:block/chalk_dot",
+      "uvlock": false,
       "x": 180
     },
-    "face=floor": {
-      "model": "hex_circles:block/chalk_square_block",
-      "uvlock": true
-    },
+    "face=floor": {	
+	"multipart":[
+		{"when": {"north": "none", "south": "none","east": "none","west": "none"  },
+	  	"apply": {"model": "hex_circles:block/chalk_dot"}
+	},
+		{"when":{ "north": "side", "south": "side","east": "none","west": "none"  },
+	  	"apply": {"model": "hex_circles:block/chalk_line"}
+	},
+		{"when":{ "north": "none", "south": "none","east": "side","west": "side"  },
+	  	"apply": {"model": "hex_circles:block/chalk_line", "x": 90}
+	}
+	]},
     "face=wall,facing=east": {
-      "model": "hex_circles:block/chalk_square_block",
-      "uvlock": true,
+      "model": "hex_circles:block/chalk_dot",
+      "uvlock": false,
       "x": 90,
       "y": 90
     },
     "face=wall,facing=north": {
-      "model": "hex_circles:block/chalk_square_block",
-      "uvlock": true,
+      "model": "hex_circles:block/chalk_dot",
+      "uvlock": false,
       "x": 90
     },
     "face=wall,facing=south": {
-      "model": "hex_circles:block/chalk_square_block",
-      "uvlock": true,
+      "model": "hex_circles:block/chalk_dot",
+      "uvlock": false,
       "x": 90,
       "y": 180
     },
     "face=wall,facing=west": {
-      "model": "hex_circles:block/chalk_square_block",
-      "uvlock": true,
+      "model": "hex_circles:block/chalk_dot",
+      "uvlock": false,
       "x": 90,
       "y": 270
     }
