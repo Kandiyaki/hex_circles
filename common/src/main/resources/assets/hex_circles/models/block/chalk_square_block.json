@@ -1,8 +1,8 @@
 {
 	"credit": "Made with Blockbench",
 	"textures": {
-		"0": "hex_chalkcircles:block/chalk_square_block",
-		"particle": "hex_chalkcircles:block/chalk_square_block"
+		"0": "hex_circles:block/chalk_square_block",
+		"particle": "hex_circles:block/chalk_square_block"
 	},
 	"elements": [
 		{

@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/handheld_rod",
   "textures": {
-    "layer0": "hex_chalkcircles:item/amethyst_chalk"
+    "layer0": "hex_circles:item/amethyst_chalk"
   }
 }

@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "hex_chalkcircles:item/chalk_square_block"
+    "layer0": "hex_circles:item/chalk_square_block"
   }
 }
