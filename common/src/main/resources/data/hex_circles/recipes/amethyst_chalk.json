@@ -1,0 +1,21 @@
+{
+    "type": "minecraft:crafting_shapeless",
+    "ingredients": [
+        {
+            "item": "minecraft:calcite"
+        },
+        {
+            "item": "hexcasting:amethyst_dust"
+        },
+        {
+            "item": "hexcasting:amethyst_dust"
+        },
+        {
+            "item": "minecraft:calcite"
+        }
+    ],
+    "result": {
+        "item": "hex_chalkcircles:amethyst_chalk",
+        "count": 16
+    }
+}

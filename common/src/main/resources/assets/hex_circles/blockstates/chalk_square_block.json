@@ -1,0 +1,36 @@
+{
+  "variants": {
+    "face=ceiling": {
+      "model": "hex_chalkcircles:block/chalk_square_block",
+      "uvlock": true,
+      "x": 180
+    },
+    "face=floor": {
+      "model": "hex_chalkcircles:block/chalk_square_block",
+      "uvlock": true
+    },
+    "face=wall,facing=east": {
+      "model": "hex_chalkcircles:block/chalk_square_block",
+      "uvlock": true,
+      "x": 90,
+      "y": 90
+    },
+    "face=wall,facing=north": {
+      "model": "hex_chalkcircles:block/chalk_square_block",
+      "uvlock": true,
+      "x": 90
+    },
+    "face=wall,facing=south": {
+      "model": "hex_chalkcircles:block/chalk_square_block",
+      "uvlock": true,
+      "x": 90,
+      "y": 180
+    },
+    "face=wall,facing=west": {
+      "model": "hex_chalkcircles:block/chalk_square_block",
+      "uvlock": true,
+      "x": 90,
+      "y": 270
+    }
+  }
+}
