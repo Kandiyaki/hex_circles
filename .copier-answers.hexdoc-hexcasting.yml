@@ -1,0 +1,27 @@
+# Changes here will be overwritten by Copier. NEVER EDIT MANUALLY
+# See: https://copier.readthedocs.io/en/stable/configuring/#the-copier-answersyml-file
+_commit: v0.1.11
+_src_path: gh:hexdoc-dev/hexdoc-hexcasting-template
+author: Kandiyaki
+book_id: hex_circles:hex_circlesbook
+default_branch: main
+github_repo: hex_circles
+gradle_mod_version_key: modVersion
+hexdoc_mod_plugin_classname: Hex_circlesModPlugin
+hexdoc_plugin_classname: Hex_circlesPlugin
+java_lang:
+    ext: java
+    src: java
+java_package: net/hex_circles
+mod_display_name: Hex Circles
+modid: hex_circles
+multiloader: true
+package_export_root: doc/src/hexdoc_hex_circles/_export
+package_name: hexdoc-hex-circles
+package_slug: hexdoc_hex_circles
+package_src: doc/src/hexdoc_hex_circles
+pages_url: https://kandiyaki.github.io/hex_circles
+pattern_regex:
+    per_world_value: registerPerWorld
+    regex: (?P<is_per_world>register|registerPerWorld)\(HexPattern\.fromAngles\("(?P<signature>[qweasd]+)",\s*HexDir\.(?P<startdir>\w+)\),\s*"(?P<name>[^"]+)"?
+pattern_registry: registry/Hex_circlesPatternRegistry.java

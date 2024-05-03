@@ -1,0 +1,14 @@
+{
+  "required": true,
+  "package": "net.hex_circles.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "minVersion": "0.8",
+  "client": [
+    "Hex_circlesMixin"
+  ],
+  "mixins": [
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

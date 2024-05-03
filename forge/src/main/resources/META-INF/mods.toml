@@ -1,0 +1,41 @@
+modLoader = "javafml"
+loaderVersion = "[${forgeDependencyVersion},)"
+license = "MIT"
+
+[[mods]]
+modId = "hex_circles"
+version = "${version}"
+displayName = "Hex Circles"
+logoFile = "icon.png"
+authors = "Kandiyaki"
+description = '''
+Hex Circles addon for Hex Casting
+'''
+
+[[dependencies.hex_circles]]
+modId = "forge"
+mandatory = true
+versionRange = "[${forgeDependencyVersion},)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.hex_circles]]
+modId = "minecraft"
+mandatory = true
+versionRange = "[${minecraftVersion},)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.hex_circles]]
+modId = "architectury"
+mandatory = true
+versionRange = "[${architecturyVersion},)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.hex_circles]]
+modId = "hexcasting"
+mandatory = true
+versionRange = "[${hexcastingVersion},)"
+ordering = "NONE"
+side = "BOTH"

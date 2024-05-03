@@ -1,0 +1,20 @@
+# Changes here will be overwritten by Copier; NEVER EDIT MANUALLY
+# https://copier.readthedocs.io/en/stable/configuring/#the-copier-answersyml-file
+_commit: v0.0.9
+_src_path: gh:FallingColors/hexdummy
+author: Kandiyaki
+capitalize_platforms: false
+classname: Hex_circles
+default_branch: main
+description: Hex Circles addon for Hex Casting
+display_name: Hex Circles
+github_repo: hex_circles
+hexcasting_version: 0.10.3
+homepage_url: https://kandiyaki.github.io/hex_circles
+initial_mod_version: 0.0.1
+java_version: 17
+license: MIT
+mappings_name: Yarn
+modid: hex_circles
+package: net.hex_circles
+sources_url: https://github.com/Kandiyaki/hex_circles

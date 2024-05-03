@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 1,
+  "id": "hex_circles",
+  "version": "${version}",
+  "name": "Hex Circles",
+  "description": "Hex Circles addon for Hex Casting",
+  "authors": [
+    "Kandiyaki"
+  ],
+  "contact": {
+    "homepage": "https://kandiyaki.github.io/hex_circles",
+    "sources": "https://github.com/Kandiyaki/hex_circles"
+  },
+  "license": "MIT",
+  "icon": "icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "net.hex_circles.fabric.Hex_circlesFabric"
+    ],
+    "client": [
+      "net.hex_circles.fabric.Hex_circlesClientFabric"
+    ]
+  },
+  "mixins": [
+    "hex_circles-common.mixins.json",
+    "hex_circles.mixins.json"
+  ],
+  "depends": {
+    "minecraft": ">=${minecraftVersion}",
+    "fabricloader": ">=${fabricLoaderVersion}",
+    "fabric-api": "*",
+    "fabric-language-kotlin": ">=${fabricKotlinVersion}",
+    "architectury": ">=${architecturyVersion}",
+    "hexcasting": ">=${hexcastingVersion}"
+  }
+}
