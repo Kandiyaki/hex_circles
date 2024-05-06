@@ -7,9 +7,11 @@ import at.petrak.hexcasting.common.network.MsgOpenSpellGuiAck;
 import at.petrak.hexcasting.xplat.IXplatAbstractions;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.stat.Stats;
+import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
@@ -20,22 +22,27 @@ public class ItemChalkStick extends AbstractChalkBlockItem {
 	
 	private static final Block BLOCK_DUST_RUNE= Hex_circlesBlockRegistry.CHALK_RUNE.get();
 
-
 	public ItemChalkStick(Settings pProperties) {
 		super(BLOCK_DUST_RUNE, pProperties);
 	}
-
-//	@Override
-//	public InteractionResult place(BlockPlaceContext blockplacecontext) {
-//		//TODO call the casting grid and wait until an iota is passed
-//		return super.place(blockplacecontext);
-//		
-//		
-//	}
+	
+	
 	
 	
 	 @Override
-	    public TypedActionResult<ItemStack> use(World world, PlayerEntity player, Hand hand) {
+	public ActionResult place(ItemPlacementContext context) {
+		PlayerEntity player = context.getPlayer();
+		World world = context.getWorld();
+		Hand hand = context.getHand();
+		use(world, player, hand);
+		return super.place(context);
+	}
+
+
+
+
+	@Override
+	public TypedActionResult<ItemStack> use(World world, PlayerEntity player, Hand hand) {
 	        if (player.isSneaking()) {
 	            if (world.isClient()) {
 	                player.playSound(HexSounds.FAIL_PATTERN, 1f, 1f);
