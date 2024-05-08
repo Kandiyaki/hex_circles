@@ -7,6 +7,7 @@ import org.jetbrains.annotations.Nullable;
 import at.petrak.hexcasting.common.blocks.circles.BlockEntitySlate;
 import at.petrak.hexcasting.common.blocks.circles.BlockSlate;
 import at.petrak.hexcasting.api.block.circle.BlockAbstractImpetus;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.enums.RailShape;
@@ -14,6 +15,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.brain.BlockPosLookTarget;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
+import net.minecraft.state.StateManager.Builder;
 import net.minecraft.state.property.DirectionProperty;
 import net.minecraft.state.property.EnumProperty;
 import net.minecraft.state.property.Properties;
@@ -27,25 +29,29 @@ import net.minecraft.world.WorldView;
 public class BlockDustRune extends BlockSlate {
 	
 	private EnumSet<Direction> connectionDirections;
-	private EnumProperty<ChalkShape> shape;
-	private DirectionProperty baseDir;
+	public static final EnumProperty<ChalkShape> SHAPE = EnumProperty.of("chalkshape", ChalkShape.class);
+	public static final DirectionProperty BASEDIR = DirectionProperty.of("basedir");
 
 
 	public BlockDustRune(Settings p_53182_) {
 		super(p_53182_);
-		//this.setDefaultState(getDefaultState().with(DIR1, Direction.SOUTH));
+		this.setDefaultState(super.stateManager.getDefaultState()
+				//.with(baseDir, Direction.SOUTH)
+				//.with(shape, ChalkShape.dot)
+				);
 		//this.setDefaultState(getDefaultState().with(DIR1, Direction.NORTH));
 	}
 
 	@Override
 	public void onPlaced(World world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack itemStack) {
 		// TODO Auto-generated method stub
-		connectionDirections = super.exitDirections(pos, state, world);
-		
 		super.onPlaced(world, pos, state, placer, itemStack);
+		this.connectionDirections.addAll(super.exitDirections(pos, state, world));
+		
 	}
 	
-	enum ChalkShape implements StringIdentifiable{
+	
+	public static enum ChalkShape implements StringIdentifiable{
 		dot,
 		line,
 		corner;
@@ -55,7 +61,7 @@ public class BlockDustRune extends BlockSlate {
 			// TODO Auto-generated method stub
 			return this.name();
 		}
-		
+
 	}
 
 	
@@ -79,6 +85,8 @@ public class BlockDustRune extends BlockSlate {
 		//get the placement state if it were a slate.
 		//this has the face it's attached to and whether it's waterlogged.
 		BlockState slateState = super.getPlacementState(pContext);
+		connectionDirections = super.exitDirections(pContext.getBlockPos(), slateState, pContext.getWorld());
+
 		//gets the first 2 directions in possibleExitDirections that have chalk in that direction
 		//this is the most bullshit piece of code ive ever written but we ball
 		Direction[] chalkDirections = new Direction[4];
@@ -95,20 +103,20 @@ public class BlockDustRune extends BlockSlate {
 		//time for an if-else catastrophe, babey
 		if(chalkDirections[0]==null) {
 			// no surrounding chalk - just set to a default line
-			slateState = slateState.with(shape, ChalkShape.line);
+			slateState = slateState.with(SHAPE, ChalkShape.line);
 			if(getConnectedDirection(slateState) == Direction.UP || getConnectedDirection(slateState) == Direction.DOWN) {
-				slateState = slateState.with(baseDir, Direction.SOUTH);
+				slateState = slateState.with(BASEDIR, Direction.SOUTH);
 			}else {
-				slateState = slateState.with(baseDir, Direction.DOWN);
+				slateState = slateState.with(BASEDIR, Direction.DOWN);
 			}	
 		}else if(chalkDirections[1] == null) {
 			//surrounding chalk on only one side
-			slateState = slateState.with(shape, ChalkShape.line).with(baseDir, chalkDirections[0]);
+			slateState = slateState.with(SHAPE, ChalkShape.line).with(BASEDIR, chalkDirections[0]);
 		}else if(chalkDirections[0] == chalkDirections[1].getOpposite()) {
 			//surrounding chalk on both sides, linear
-			slateState = slateState.with(shape, ChalkShape.line).with(baseDir, chalkDirections[0]);
+			slateState = slateState.with(SHAPE, ChalkShape.line).with(BASEDIR, chalkDirections[0]);
 		}else {
-			slateState = slateState.with(shape, ChalkShape.corner).with(baseDir, chalkDirections[0]);
+			slateState = slateState.with(SHAPE, ChalkShape.corner).with(BASEDIR, chalkDirections[0]);
 		}
 		//now shape and dir properties are good. the actual rotation is done in json (scary)
 		return slateState;
@@ -120,6 +128,15 @@ public class BlockDustRune extends BlockSlate {
 		// TODO Auto-generated method stub
 		return super.getStateForNeighborUpdate(pState, pFacing, pFacingState, pLevel, pCurrentPos, pFacingPos);
 	}
+
+	@Override
+	protected void appendProperties(Builder<Block, BlockState> builder) {
+		// TODO Auto-generated method stub
+		super.appendProperties(builder);
+		builder.add(BASEDIR);
+		builder.add(SHAPE);		
+	}
+	
 	
 	
 	
