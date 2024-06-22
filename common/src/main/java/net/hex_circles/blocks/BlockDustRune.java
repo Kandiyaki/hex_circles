@@ -29,8 +29,8 @@ import net.minecraft.world.WorldView;
 public class BlockDustRune extends BlockSlate {
 	
 	private EnumSet<Direction> connectionDirections;
-	public static final EnumProperty<ChalkShape> SHAPE = EnumProperty.of("chalkshape", ChalkShape.class);
-	public static final DirectionProperty BASEDIR = DirectionProperty.of("basedir");
+//	public static final EnumProperty<ChalkShape> SHAPE = EnumProperty.of("chalkshape", ChalkShape.class);
+//	public static final DirectionProperty BASEDIR = DirectionProperty.of("basedir");
 
 
 	public BlockDustRune(Settings p_53182_) {
@@ -46,23 +46,23 @@ public class BlockDustRune extends BlockSlate {
 	public void onPlaced(World world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack itemStack) {
 		// TODO Auto-generated method stub
 		super.onPlaced(world, pos, state, placer, itemStack);
-		this.connectionDirections.addAll(super.exitDirections(pos, state, world));
+//		this.connectionDirections.addAll(super.exitDirections(pos, state, world));
 		
 	}
 	
-	
-	public static enum ChalkShape implements StringIdentifiable{
-		dot,
-		line,
-		corner;
-
-		@Override
-		public String asString() {
-			// TODO Auto-generated method stub
-			return this.name();
-		}
-
-	}
+//	
+//	public static enum ChalkShape implements StringIdentifiable{
+//		dot,
+//		line,
+//		corner;
+//
+//		@Override
+//		public String asString() {
+//			// TODO Auto-generated method stub
+//			return this.name();
+//		}
+//
+//	}
 
 	
 	
@@ -80,47 +80,47 @@ public class BlockDustRune extends BlockSlate {
 	//finally, rotate/mirror model if east became dir2
 	//(if west became dir2, model will already be in correct location)
 	
-	@Override
-	public @Nullable BlockState getPlacementState(ItemPlacementContext pContext) {
-		//get the placement state if it were a slate.
-		//this has the face it's attached to and whether it's waterlogged.
-		BlockState slateState = super.getPlacementState(pContext);
-		connectionDirections = super.exitDirections(pContext.getBlockPos(), slateState, pContext.getWorld());
-
-		//gets the first 2 directions in possibleExitDirections that have chalk in that direction
-		//this is the most bullshit piece of code ive ever written but we ball
-		Direction[] chalkDirections = new Direction[4];
-		int index = 0;
-		for (Direction D:this.connectionDirections) {
-			//add blocks with connectible chalk to chalkDirections array
-			BlockEntity BE =(pContext.getWorld().getBlockEntity((pContext.getBlockPos().offset(D))));
-			if (BE instanceof BlockEntitySlate){
-				chalkDirections[index] = D;
-				index++;
-			}
-		}
-		//now, chalkDirections has all the directions chalk is in. we'll only use the first 2
-		//time for an if-else catastrophe, babey
-		if(chalkDirections[0]==null) {
-			// no surrounding chalk - just set to a default line
-			slateState = slateState.with(SHAPE, ChalkShape.line);
-			if(getConnectedDirection(slateState) == Direction.UP || getConnectedDirection(slateState) == Direction.DOWN) {
-				slateState = slateState.with(BASEDIR, Direction.SOUTH);
-			}else {
-				slateState = slateState.with(BASEDIR, Direction.DOWN);
-			}	
-		}else if(chalkDirections[1] == null) {
-			//surrounding chalk on only one side
-			slateState = slateState.with(SHAPE, ChalkShape.line).with(BASEDIR, chalkDirections[0]);
-		}else if(chalkDirections[0] == chalkDirections[1].getOpposite()) {
-			//surrounding chalk on both sides, linear
-			slateState = slateState.with(SHAPE, ChalkShape.line).with(BASEDIR, chalkDirections[0]);
-		}else {
-			slateState = slateState.with(SHAPE, ChalkShape.corner).with(BASEDIR, chalkDirections[0]);
-		}
-		//now shape and dir properties are good. the actual rotation is done in json (scary)
-		return slateState;
-	}
+//	@Override
+//	public @Nullable BlockState getPlacementState(ItemPlacementContext pContext) {
+//		//get the placement state if it were a slate.
+//		//this has the face it's attached to and whether it's waterlogged.
+//		BlockState slateState = super.getPlacementState(pContext);
+//		connectionDirections = super.exitDirections(pContext.getBlockPos(), slateState, pContext.getWorld());
+//
+//		//gets the first 2 directions in possibleExitDirections that have chalk in that direction
+//		//this is the most bullshit piece of code ive ever written but we ball
+//		Direction[] chalkDirections = new Direction[4];
+//		int index = 0;
+//		for (Direction D:this.connectionDirections) {
+//			//add blocks with connectible chalk to chalkDirections array
+//			BlockEntity BE =(pContext.getWorld().getBlockEntity((pContext.getBlockPos().offset(D))));
+//			if (BE instanceof BlockEntitySlate){
+//				chalkDirections[index] = D;
+//				index++;
+//			}
+//		}
+//		//now, chalkDirections has all the directions chalk is in. we'll only use the first 2
+//		//time for an if-else catastrophe, babey
+//		if(chalkDirections[0]==null) {
+//			// no surrounding chalk - just set to a default line
+//			slateState = slateState.with(SHAPE, ChalkShape.line);
+//			if(getConnectedDirection(slateState) == Direction.UP || getConnectedDirection(slateState) == Direction.DOWN) {
+//				slateState = slateState.with(BASEDIR, Direction.SOUTH);
+//			}else {
+//				slateState = slateState.with(BASEDIR, Direction.DOWN);
+//			}	
+//		}else if(chalkDirections[1] == null) {
+//			//surrounding chalk on only one side
+//			slateState = slateState.with(SHAPE, ChalkShape.line).with(BASEDIR, chalkDirections[0]);
+//		}else if(chalkDirections[0] == chalkDirections[1].getOpposite()) {
+//			//surrounding chalk on both sides, linear
+//			slateState = slateState.with(SHAPE, ChalkShape.line).with(BASEDIR, chalkDirections[0]);
+//		}else {
+//			slateState = slateState.with(SHAPE, ChalkShape.corner).with(BASEDIR, chalkDirections[0]);
+//		}
+//		//now shape and dir properties are good. the actual rotation is done in json (scary)
+//		return slateState;
+//	}
 
 	@Override
 	public BlockState getStateForNeighborUpdate(BlockState pState, Direction pFacing, BlockState pFacingState,
@@ -133,8 +133,8 @@ public class BlockDustRune extends BlockSlate {
 	protected void appendProperties(Builder<Block, BlockState> builder) {
 		// TODO Auto-generated method stub
 		super.appendProperties(builder);
-		builder.add(BASEDIR);
-		builder.add(SHAPE);		
+//		builder.add(BASEDIR);
+//		builder.add(SHAPE);		
 	}
 	
 	
