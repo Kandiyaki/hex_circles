@@ -7,6 +7,7 @@ import at.petrak.hexcasting.common.network.MsgOpenSpellGuiAck;
 import at.petrak.hexcasting.xplat.IXplatAbstractions;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -18,7 +19,7 @@ import net.minecraft.world.World;
 import net.hex_circles.registry.Hex_circlesBlockRegistry;
 
 
-public class ItemChalkStick extends AbstractChalkBlockItem {
+public class ItemChalkStick extends BlockItem {
 	
 	private static final Block BLOCK_DUST_RUNE= Hex_circlesBlockRegistry.CHALK_RUNE.get();
 
@@ -34,39 +35,39 @@ public class ItemChalkStick extends AbstractChalkBlockItem {
 		PlayerEntity player = context.getPlayer();
 		World world = context.getWorld();
 		Hand hand = context.getHand();
-		use(world, player, hand);
+		//use(world, player, hand);
 		return super.place(context);
 	}
 
 
 
 
-	@Override
-	public TypedActionResult<ItemStack> use(World world, PlayerEntity player, Hand hand) {
-	        if (player.isSneaking()) {
-	            if (world.isClient()) {
-	                player.playSound(HexSounds.FAIL_PATTERN, 1f, 1f);
-	            } else if (player instanceof ServerPlayerEntity serverPlayer) {
-	                IXplatAbstractions.INSTANCE.clearCastingData(serverPlayer);
-	            }
-	        }
-
-	        if (!world.isClient() && player instanceof ServerPlayerEntity serverPlayer) {
-	            var harness = IXplatAbstractions.INSTANCE.getHarness(serverPlayer, hand);
-	            var patterns = IXplatAbstractions.INSTANCE.getPatterns(serverPlayer);
-	            var descs = harness.generateDescs();
-
-	            IXplatAbstractions.INSTANCE.sendPacketToPlayer(serverPlayer,
-	                new MsgOpenSpellGuiAck(hand, patterns, descs.getFirst(), descs.getSecond(), descs.getThird(),
-	                    harness.getParenCount()));
-	        }
-
-	        player.incrementStat(Stats.USED.getOrCreateStat(this));
-//	        player.gameEvent(GameEvent.ITEM_INTERACT_START);
-
-	        return TypedActionResult.success(player.getStackInHand(hand));
-	    }
-
-	
+//	@Override
+//	public TypedActionResult<ItemStack> use(World world, PlayerEntity player, Hand hand) {
+//	        if (player.isSneaking()) {
+//	            if (world.isClient()) {
+//	                player.playSound(HexSounds.FAIL_PATTERN, 1f, 1f);
+//	            } else if (player instanceof ServerPlayerEntity serverPlayer) {
+//	                IXplatAbstractions.INSTANCE.clearCastingData(serverPlayer);
+//	            }
+//	        }
+//
+//	        if (!world.isClient() && player instanceof ServerPlayerEntity serverPlayer) {
+//	            var harness = IXplatAbstractions.INSTANCE.getHarness(serverPlayer, hand);
+//	            var patterns = IXplatAbstractions.INSTANCE.getPatterns(serverPlayer);
+//	            var descs = harness.generateDescs();
+//
+//	            IXplatAbstractions.INSTANCE.sendPacketToPlayer(serverPlayer,
+//	                new MsgOpenSpellGuiAck(hand, patterns, descs.getFirst(), descs.getSecond(), descs.getThird(),
+//	                    harness.getParenCount()));
+//	        }
+//
+//	        player.incrementStat(Stats.USED.getOrCreateStat(this));
+////	        player.gameEvent(GameEvent.ITEM_INTERACT_START);
+//
+//	        return TypedActionResult.success(player.getStackInHand(hand));
+//	    }
+//
+//	
 
 }

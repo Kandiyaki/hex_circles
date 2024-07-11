@@ -6,19 +6,27 @@ import org.jetbrains.annotations.Nullable;
 
 import at.petrak.hexcasting.common.blocks.circles.BlockEntitySlate;
 import at.petrak.hexcasting.common.blocks.circles.BlockSlate;
+import at.petrak.hexcasting.common.lib.HexSounds;
+import at.petrak.hexcasting.common.network.MsgOpenSpellGuiAck;
+import at.petrak.hexcasting.xplat.IXplatAbstractions;
 import at.petrak.hexcasting.api.block.circle.BlockAbstractImpetus;
+import at.petrak.hexcasting.api.spell.math.HexPattern;
+import net.hex_circles.blockentity.BlockEntityChalk;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.enums.RailShape;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.brain.BlockPosLookTarget;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.state.StateManager.Builder;
 import net.minecraft.state.property.DirectionProperty;
 import net.minecraft.state.property.EnumProperty;
 import net.minecraft.state.property.Properties;
+import net.minecraft.util.Hand;
 import net.minecraft.util.StringIdentifiable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
@@ -29,99 +37,49 @@ import net.minecraft.world.WorldView;
 public class BlockDustRune extends BlockSlate {
 	
 	private EnumSet<Direction> connectionDirections;
-//	public static final EnumProperty<ChalkShape> SHAPE = EnumProperty.of("chalkshape", ChalkShape.class);
-//	public static final DirectionProperty BASEDIR = DirectionProperty.of("basedir");
 
 
 	public BlockDustRune(Settings p_53182_) {
 		super(p_53182_);
 		this.setDefaultState(super.stateManager.getDefaultState()
-				//.with(baseDir, Direction.SOUTH)
-				//.with(shape, ChalkShape.dot)
+				.with(ENERGIZED, false)
+                .with(FACING, Direction.NORTH)
+                .with(WATERLOGGED, false)
 				);
-		//this.setDefaultState(getDefaultState().with(DIR1, Direction.NORTH));
 	}
 
 	@Override
 	public void onPlaced(World world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack itemStack) {
 		// TODO Auto-generated method stub
 		super.onPlaced(world, pos, state, placer, itemStack);
-//		this.connectionDirections.addAll(super.exitDirections(pos, state, world));
+		PlayerEntity player = (PlayerEntity) placer; //hopefully nobody figures out a way to get a pig to place these
+		Hand hand = player.getActiveHand();
 		
+		//open a casting grid
+		if (player.isSneaking()) {
+            if (world.isClient()) {
+                player.playSound(HexSounds.FAIL_PATTERN, 1f, 1f);
+            } else if (player instanceof ServerPlayerEntity serverPlayer) {
+                IXplatAbstractions.INSTANCE.clearCastingData(serverPlayer);
+            }
+        }
+
+        if (!world.isClient() && player instanceof ServerPlayerEntity serverPlayer) {
+            var harness = IXplatAbstractions.INSTANCE.getHarness(serverPlayer, hand);
+            
+        //TODO: change the patterns var to a list of only a consideration.
+        
+            var patterns = IXplatAbstractions.INSTANCE.getPatterns(serverPlayer);
+            var descs = harness.generateDescs();
+
+            IXplatAbstractions.INSTANCE.sendPacketToPlayer(serverPlayer,
+                new MsgOpenSpellGuiAck(hand, patterns, descs.getFirst(), descs.getSecond(), descs.getThird(),
+                    harness.getParenCount()));
+        }
+        
 	}
 	
-//	
-//	public static enum ChalkShape implements StringIdentifiable{
-//		dot,
-//		line,
-//		corner;
-//
-//		@Override
-//		public String asString() {
-//			// TODO Auto-generated method stub
-//			return this.name();
-//		}
-//
-//	}
-
 	
-	
-	//TODO: write line connection stuff
-	//step 1: take the "facing" direction and rotate the model so it faces that way
-	//step 2: take the exit directions and figure out which model to use
-	//step 3: take the exit directions and rotate the texture so it touches all the connections
-	
-	//EFFICIENT WAY TO DO IT I THINK:
-	//have a DIR1 and a DIR2 -  just take any random 2 items in the connectionDirection set
-	//super placement method already guarantees the model will be on the correct face
-	//both textures have a connection at the south end. rotate the model so south becomes dir1
-	//if dir2 is opposite of dir1, then use line model
-	//if dir2 is 90deg from dir1, set to corner model
-	//finally, rotate/mirror model if east became dir2
-	//(if west became dir2, model will already be in correct location)
-	
-//	@Override
-//	public @Nullable BlockState getPlacementState(ItemPlacementContext pContext) {
-//		//get the placement state if it were a slate.
-//		//this has the face it's attached to and whether it's waterlogged.
-//		BlockState slateState = super.getPlacementState(pContext);
-//		connectionDirections = super.exitDirections(pContext.getBlockPos(), slateState, pContext.getWorld());
-//
-//		//gets the first 2 directions in possibleExitDirections that have chalk in that direction
-//		//this is the most bullshit piece of code ive ever written but we ball
-//		Direction[] chalkDirections = new Direction[4];
-//		int index = 0;
-//		for (Direction D:this.connectionDirections) {
-//			//add blocks with connectible chalk to chalkDirections array
-//			BlockEntity BE =(pContext.getWorld().getBlockEntity((pContext.getBlockPos().offset(D))));
-//			if (BE instanceof BlockEntitySlate){
-//				chalkDirections[index] = D;
-//				index++;
-//			}
-//		}
-//		//now, chalkDirections has all the directions chalk is in. we'll only use the first 2
-//		//time for an if-else catastrophe, babey
-//		if(chalkDirections[0]==null) {
-//			// no surrounding chalk - just set to a default line
-//			slateState = slateState.with(SHAPE, ChalkShape.line);
-//			if(getConnectedDirection(slateState) == Direction.UP || getConnectedDirection(slateState) == Direction.DOWN) {
-//				slateState = slateState.with(BASEDIR, Direction.SOUTH);
-//			}else {
-//				slateState = slateState.with(BASEDIR, Direction.DOWN);
-//			}	
-//		}else if(chalkDirections[1] == null) {
-//			//surrounding chalk on only one side
-//			slateState = slateState.with(SHAPE, ChalkShape.line).with(BASEDIR, chalkDirections[0]);
-//		}else if(chalkDirections[0] == chalkDirections[1].getOpposite()) {
-//			//surrounding chalk on both sides, linear
-//			slateState = slateState.with(SHAPE, ChalkShape.line).with(BASEDIR, chalkDirections[0]);
-//		}else {
-//			slateState = slateState.with(SHAPE, ChalkShape.corner).with(BASEDIR, chalkDirections[0]);
-//		}
-//		//now shape and dir properties are good. the actual rotation is done in json (scary)
-//		return slateState;
-//	}
-
 	@Override
 	public BlockState getStateForNeighborUpdate(BlockState pState, Direction pFacing, BlockState pFacingState,
 			WorldAccess pLevel, BlockPos pCurrentPos, BlockPos pFacingPos) {
@@ -133,11 +91,25 @@ public class BlockDustRune extends BlockSlate {
 	protected void appendProperties(Builder<Block, BlockState> builder) {
 		// TODO Auto-generated method stub
 		super.appendProperties(builder);
-//		builder.add(BASEDIR);
-//		builder.add(SHAPE);		
+	
 	}
 	
+	@Nullable
+    @Override
+    public BlockEntity createBlockEntity(BlockPos pPos, BlockState pState) {
+        return new BlockEntityChalk(pPos, pState);
+    }
+
 	
+	 @Override
+	 public @Nullable
+    HexPattern getPattern(BlockPos pos, BlockState bs, World world) {
+        if (world.getBlockEntity(pos) instanceof BlockEntityChalk tile) {
+            return tile.pattern;
+        } else {
+            return null;
+        }
+    }
 	
 	
 }
